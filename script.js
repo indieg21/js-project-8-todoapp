@@ -18,9 +18,10 @@ submitBtn.addEventListener("click", addTodo);
 
 function addTodo() {
   let title = document.getElementById("todo-title").value; // reading the value from the input
-  let id = " " + new Date().getTime(); // creating a new id everytime we add a new task
+  let id = "" + new Date().getTime(); // creating a new id everytime we add a new task
 
   todos.push({ title: title, id: id }); // pushing to the todo array (basically saving)
+  document.getElementById("todo-title").value="";
   console.log(todos);
   localStore(todos); // the local storage will run & save the todo list (tasks) a save to the local storage
   render(); // displaying the list from the local storage
