@@ -1,0 +1,39 @@
+<!-- Project 8
+Module 4: JavaScript Projects
+Project 8: Build a ToDo App
+
+Requirements:
+-Create a Github repository for this project.
+-A user must be able to add, edit, and delete a todo item.
+-Hint: use JavaScript localStorage to store the todos
+
+Note: Use the "Support" at the top if you need help, as well as to send me the Github link to your solution when you finish. -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDo App</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <input type="text" placeholder="add todo list" id="todo-title" />
+      <input
+        type="button"
+        value="saveEdit"
+        style="display: none"
+        id="saveEdit"
+      />
+      <input type="submit" id="add-todo" />
+      <div id="saveIndex"></div>
+      <div id="display-todo" class="todo-display"></div>
+      <!-- this will display all our tasks(todos) -->
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
