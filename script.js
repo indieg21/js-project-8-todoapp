@@ -113,3 +113,5 @@ function render() {
 }
 
 render();
+// breakdown of app: adding, delete, update and render (display/view) CRUD (create read update delete)
+// creating: submiting the form. Read: displaying the page Updating: Updating the data Delete: deleting the data
