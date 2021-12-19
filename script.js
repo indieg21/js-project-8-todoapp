@@ -1,106 +1,110 @@
-// 1. function to dipslay todos
-// 2. function to add todos.
-// 3. function to store todos to localstorage.
-
+// 1. function to dipslay todos: Function Render the todos list (Line 93)
+// 2. function to add todos. function addTodo() to add item and id to list (line 20)
+// 3. function to store todos to localstorage. (lines 33-36)
+// 4. Fucntion delete (line 42-52)
+// 5. Funtion to update (line 56-92)
+// 6. Selecting data from localStorage (line 9-16)
 let todos;
 
-let getData = JSON.parse(localStorage.getItem("todos")); //reading data from localStorage
-if (Array.isArray(getData)) {
-  todos = getData;
+let getData = JSON.parse(localStorage.getItem("todos")); //selecting data from localStorage (retrieving data & store in todos)
+if (Array.isArray(getData)) { // checking if it has the data (if the data shows up will run & save data)
+  todos = getData; // saving data to todos 
 } else {
-  // it will save an empty array
-  todos = [];
-  localStore(todos);
+  todos = []; // if it is not getting any data from the localStorage it will save an empty array
+  localStore(todos); // update the localStorage to the empy array
 }
 
 let submitBtn = document.getElementById("add-todo"); //adding todo function.
-submitBtn.addEventListener("click", addTodo);
+submitBtn.addEventListener("click", addTodo); // onclick the function will execute (run)
 
-function addTodo() {
-  let title = document.getElementById("todo-title").value; // reading the value from the input
-  let id = "" + new Date().getTime(); // creating a new id everytime we add a new task
+function addTodo() { 
+  let title = document.getElementById("todo-title").value; //  1st step is to read the value from the input field(todo list window)
+  let id = "" + new Date().getTime(); // creating a new id everytime we add a new task. Every task will have its own id. The reason is to perform for the update & delete function 
 
-  todos.push({ title: title, id: id }); // pushing to the todo array (basically saving)
-  document.getElementById("todo-title").value="";
+  todos.push({ title: title, id: id }); // pushing (the objects) to the todos array (basically saving)
+  document.getElementById("todo-title").value=""; // this empty string clears the input field
+
   console.log(todos);
-  localStore(todos); // the local storage will run & save the todo list (tasks) a save to the local storage
-  render(); // displaying the list from the local storage
+  localStore(todos); //  the local storage will run & save the todos list or(tasks) to the local storage
+  render(); // displaying the list from the local storage. 
 }
 
 //  local storage fucntion
 function localStore(todos) {
-  // everytime you update the todos. It will be receieved and updated to the localStorage
-  localStorage.setItem("todos", JSON.stringify(todos));
+  // everytime you add,update & delete the todos. It will be receieved and updated to the localStorage. localStorage is to hold saved data
+  localStorage.setItem("todos", JSON.stringify(todos)); // object has to be converted to a string (attached to Json..) for
+  //local storage to accept it
+  
 }
 
-function deleteTodo(e) {
+function deleteTodo(e) { // Event(e) Delete by clicking delete button
   // deleting tasks from the todo list
-  let targetId = e.target.id;
-  todos = todos.filter((todo) => {
-    if (todo.id === targetId) {
+  let targetId = e.target.id; // target id is the object(todo item) that is being deleted
+  todos = todos.filter((todo) => { // filter will remove todo object which matches the target Id
+    if (todo.id === targetId) { // When the target id matches to the todo Id then it will return false(it will delete the todo item)
       return false;
     } else {
-      return true;
+      return true; // When the target id doesn't matche to the todo Id then it will return true(it will keep the todo stored
     }
   });
-  localStore(todos); // saving the new list and
-  render(); // now displaying the new list.
+  localStore(todos); // saving the new list to the local storage
+  render(); // run function to now display the new list.
 }
+
+let saveIndex; // to store target Id in global( will need for line 82)
 
 function updateTodo(e) {
   // updating the list
   let targetIndex = e.target.id; // everything needs to be updated so that the new edit shows properly
-  let saveIndex = document.getElementById("saveIndex");
-  let saveEdit = document.getElementById("saveEdit");
-  let addTodo = document.getElementById("add-todo");
-  let title = document.getElementById("todo-title");
-  todos.forEach((todo) => {
-    if (targetIndex === todo.id) {
-      saveIndex.value = targetIndex;
-      title.value = todo.title;
+  let saveEdit = document.getElementById("saveEdit"); // selecting the edit button
+  let addTodo = document.getElementById("add-todo"); // selecting the add submit button
+  let title = document.getElementById("todo-title"); // selecting the input field(todo object)
+  todos.forEach((todo) => { // loop through the todos field(array)
+    if (targetIndex === todo.id) { // if targetIndex matches to the todo (the if statment will return true)
+      saveIndex = targetIndex; // storing the id
+      title.value = todo.title; // display the title into input field
     }
-    saveEdit.style.display = "inline-block";
-    addTodo.style.display = "none";
+    saveEdit.style.display = "inline-block"; // displaying the saveEdit button
+    addTodo.style.display = "none"; // hiding the submit buttonh
   });
 }
 
-let saveEdit = document.getElementById("saveEdit");
+let saveEdit = document.getElementById("saveEdit"); // seleting the edit button from the dom
 
-saveEdit.addEventListener("click", saveUpdate);
+saveEdit.addEventListener("click", saveUpdate); // adding onclick eventListener & it will run save update function
 
-function saveUpdate(e) {
-  e.preventDefault();
+function saveUpdate(e) { 
 
-  let saveIndex = document.getElementById("saveIndex").value;
-  let title = document.getElementById("todo-title");
+  let title = document.getElementById("todo-title"); // selecting the input field (todo object)
 
-  todos.map((todo, idx) => {
-    if (saveIndex === todo.id) {
-      todos[idx] = { title: title.value, id: saveIndex };
+  todos.map((todo, index) => { // the map will loop through each todo object
+    if (saveIndex === todo.id) { // if the todo id matches we will update the todo object
+      todos[index] = { title: title.value, id: saveIndex }; // update and save new todo object
     }
   });
-  let saveEdit = document.getElementById("saveEdit");
-  let addTodo = document.getElementById("add-todo");
-  saveEdit.style.display = "none";
-  addTodo.style.display = "inline-block";
-  title.value = "";
-  localStore(todos);
-  render();
+  let saveEdit = document.getElementById("saveEdit"); //select saveedit button
+  let addTodo = document.getElementById("add-todo"); //select submit button
+  saveEdit.style.display = "none"; // to hide the edit button (so submit button is visable)
+  addTodo.style.display = "inline-block"; // display the sumbit button
+  title.value = ""; // empty the input field window
+  localStore(todos);// call (execute) the localStorage
+  render(); //Call the render function(display the todos data)
 }
 
-function render() {
+function render() { 
   // creating buttons (update, delete) also displaying the task list.
   document.getElementById("display-todo").innerHTML = "";
   todos.map((todo) => {
+    // map function to loop through the todo list (Array)
     // todos variable holds all data from localStorage
     let element = document.createElement("p"); // creating the Paragraph
     element.innerText = todo.title;
-    let btn = document.createElement("button");
+    let btn = document.createElement("button");// line 100 to 104 is the update button
     btn.innerText = "Update";
     btn.id = todo.id;
     btn.style = "margin-left:10px";
     btn.onclick = updateTodo; // line 95 to 99 is the update button
-    let btnDelete = document.createElement("button"); // line 100 to 104 is the update button
+    let btnDelete = document.createElement("button"); // line 109-115 is the delete button
     btnDelete.innerText = "Delete";
     btnDelete.id = todo.id;
     btnDelete.style = "margin-left:10px";
