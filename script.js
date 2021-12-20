@@ -41,11 +41,8 @@ function deleteTodo(e) { // Event(e) Delete by clicking delete button
   // deleting tasks from the todo list
   let targetId = e.target.id; // target id is the object(todo item) that is being deleted
   todos = todos.filter((todo) => { // filter will remove todo object which matches the target Id
-    if (todo.id === targetId) { // When the target id matches to the todo Id then it will return false(it will delete the todo item)
-      return false;
-    } else {
-      return true; // When the target id doesn't matche to the todo Id then it will return true(it will keep the todo stored
-    }
+    return todo.id != targetId; // acts as if/else statement returning true/false. Keep all id's that
+    //don't match the todo that is being deleted.
   });
   localStore(todos); // saving the new list to the local storage
   render(); // run function to now display the new list.
